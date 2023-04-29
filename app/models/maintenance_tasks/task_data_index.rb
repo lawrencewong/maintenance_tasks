@@ -22,10 +22,16 @@ module MaintenanceTasks
       # values.
       #
       # @return [Array<TaskDataIndex>] the list of Task Data.
-      def available_tasks
+      def available_tasks(tag = nil)
         tasks = []
 
-        task_names = Task.available_tasks.map(&:name)
+        task_names = Task.available_tasks
+
+        if tag.present?
+          task_names.select!{ |t| t.tags.include?(tag.to_sym) }
+        end
+
+        task_names.map!(&:name)
 
         active_runs = Run.with_attached_csv.active.where(task_name: task_names)
         active_runs.each do |run|
