@@ -21,6 +21,8 @@ module MaintenanceTasks
     # @api private
     class_attribute :collection_builder_strategy, default: NullCollectionBuilder.new
 
+    class_attribute :tags, default: []
+
     define_callbacks :start, :complete, :error, :cancel, :pause, :interrupt
 
     class << self
